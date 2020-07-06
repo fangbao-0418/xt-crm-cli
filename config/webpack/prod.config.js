@@ -10,6 +10,7 @@ var webpack = require('webpack')
 const TerserPlugin = require('terser-webpack-plugin');
 var paths = require('../paths')
 const customWebpackConfig = fs.existsSync(paths.webpack) ? require(paths.webpack) : null
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 module.exports = (config) => {
   var baseConfig = require('./base.config')(config, false)
   var __cwd = process.cwd()
@@ -22,6 +23,7 @@ module.exports = (config) => {
         {
           loader: 'babel-loader',
           options: {
+            cacheDirectory: true,
             configFile: path.resolve(__cwd, './.babelrc')
           }
         },
@@ -29,11 +31,21 @@ module.exports = (config) => {
           loader: 'ts-loader',
           options: {
             context: __cwd,
+            transpileOnly: true,
             configFile: path.resolve(__cwd, './tsconfig.json')
           }
         }
       ]
     }
+  )
+  baseConfig.plugins.push(
+    new ForkTsCheckerWebpackPlugin({
+      typescript: {
+        context: __cwd,
+        configFile: path.resolve(__cwd, './tsconfig.json'),
+        profile: true
+      }
+    })
   )
   baseConfig.optimization = {
     minimizer: [

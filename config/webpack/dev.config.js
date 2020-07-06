@@ -9,6 +9,7 @@ var path = require('path')
 var webpack = require('webpack')
 var paths = require('../paths')
 const customWebpackConfig = fs.existsSync(paths.webpack) ? require(paths.webpack) : null
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 module.exports = (config) => {
   var baseConfig = require('./base.config')(config, true)
   var __cwd = process.cwd()
@@ -21,20 +22,31 @@ module.exports = (config) => {
       exclude: /node_modules/,
       use: [
         {
-          loader: 'awesome-typescript-loader',
+          loader: 'babel-loader',
           options: {
-            // configFileContent: tsconfigFileContent,
-            // configFileName: path.resolve(__dirname, '../tsconfig.json'),
-            useCache: true,
-            useBabel: true,
-            babelOptions: {
-              configFile: path.resolve(__cwd, './.babelrc')
-            },
-            babelCore: '@babel/core'
+            cacheDirectory: true,
+            configFile: path.resolve(__cwd, './.babelrc')
+          }
+        },
+        {
+          loader: 'ts-loader',
+          options: {
+            context: __cwd,
+            transpileOnly: true,
+            configFile: path.resolve(__cwd, './tsconfig.json')
           }
         }
       ]
     }
+  )
+  baseConfig.plugins.push(
+    new ForkTsCheckerWebpackPlugin({
+      typescript: {
+        context: __cwd,
+        configFile: path.resolve(__cwd, './tsconfig.json'),
+        profile: true
+      }
+    })
   )
   if (customWebpackConfig) {
     const finalConfig = customWebpackConfig(baseConfig, 'dev')
