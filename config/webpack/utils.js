@@ -117,6 +117,10 @@ function ExtractTextPlugin (dev = true) {
   })
 }
 module.exports = {
+  getMiniCssExtractLoaderConfig,
+  MiniCssExtractPlugin,
+  getCssLoaderConfig,
+  getPostCssLoaderConfig,
   getStyleLoaderConfig,
   getImageLoaderConfig,
   getFileLoaderConfig,

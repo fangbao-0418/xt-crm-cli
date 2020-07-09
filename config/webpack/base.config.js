@@ -76,11 +76,11 @@ module.exports = (config = {}, dev = true) => {
         path.resolve(__cwd, 'src')
       ],
       extensions: [
-        '.tsx',
-        '.ts',
+        '.min.js',
         '.jsx',
         '.js',
-        '.min.js',
+        '.tsx',
+        '.ts',
         '.json',
         '.styl',
         '.css'

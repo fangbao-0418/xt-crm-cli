@@ -23,7 +23,7 @@ module.exports = (config) => {
         {
           loader: 'babel-loader',
           options: {
-            cacheDirectory: true,
+            cacheDirectory: false,
             configFile: path.resolve(__cwd, './.babelrc')
           }
         },
