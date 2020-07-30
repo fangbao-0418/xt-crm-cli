@@ -1,6 +1,7 @@
 var path = require('path')
 var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var __cwd = process.cwd()
+var BUILD_TIME = new Date().getTime()
 
 function getCssLoaderConfig (dev, modules = false) {
   return {
@@ -110,7 +111,7 @@ function getFileLoaderConfig (dev = true) {
 }
 function ExtractTextPlugin (dev = true) {
   return new MiniCssExtractPlugin({
-    filename: dev ? '[name].css' : 'css/' + '[name].css',
+    filename: dev ? '[name].css' : 'css/[name].css?v=' + BUILD_TIME,
     chunkFilename: dev ? '[name].css' : 'css/' + '[name].[hash:8].css',
     allChunks: true,
     ignoreOrder: true

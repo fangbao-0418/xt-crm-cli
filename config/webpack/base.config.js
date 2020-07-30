@@ -15,6 +15,9 @@ var {
   getImageLoaderConfig,
   ExtractTextPlugin
 } = require('./utils')
+
+const BUILD_TIME = new Date().getTime()
+
 module.exports = (config = {}, dev = true) => {
   const entry = config.entry
   const outdir = config.outdir || 'dist'
@@ -38,7 +41,7 @@ module.exports = (config = {}, dev = true) => {
     },
     output: {
       path: path.resolve(__cwd, outdir),
-      filename: dev ? undefined : 'js/' + '[name].js',
+      filename: dev ? undefined : 'js/[name].js?v=' + BUILD_TIME,
       chunkFilename: dev ? undefined : 'js/' + '[name]-[chunkhash:8].js',
       publicPath: '/'
     },
